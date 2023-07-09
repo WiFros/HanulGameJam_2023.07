@@ -9,19 +9,30 @@ public class Enemy : MonoBehaviour
     public float defensePower;
     public float attackSpeed;
     public float moveSpeed;
-    public int expValue;
-
-    private float currentHealth;
+    public float expValue;
+    public bool isBoss = false;
+    public float currentHealth;
     public GameObject healthBarPrefab;
+    public GameObject bossHealthBarPrefab;
+    
     private GameObject healthBarUI;
     
+
     private void Start()
     {
+        EnemyManager.Instance.enemyCountPerRound--;
+        EnemyManager.Instance.AddEnemy(this);
         currentHealth = maxHealth;
         healthBarUI = Instantiate(healthBarPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("Canvas").transform);
+        UIManager.Instance.otherUIs.Add(healthBarUI);
         healthBarUI.GetComponent<HealthBar>().SetMaxHealth(maxHealth);
     }
-
+    public void changeHealthBar()
+    {
+        healthBarUI = Instantiate(bossHealthBarPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("Canvas").transform);
+        UIManager.Instance.otherUIs.Add(healthBarUI);
+        healthBarUI.GetComponent<HealthBar>().SetMaxHealth(maxHealth);
+    }
     private void Update()
     {
         // 성채를 향해 이동
@@ -87,6 +98,8 @@ public class Enemy : MonoBehaviour
     private void OnDestroy()
     {
         // 적이 파괴될 때 체력바 UI도 파괴
+        EnemyManager.Instance.RemoveEnemy(this);
+        UIManager.Instance.otherUIs.Remove(healthBarUI);
         Destroy(healthBarUI);
     }
 

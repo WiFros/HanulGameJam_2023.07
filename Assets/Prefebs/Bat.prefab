@@ -551,7 +551,10 @@ MonoBehaviour:
   attackSpeed: 1
   moveSpeed: 1
   expValue: 10
+  isBoss: 0
+  currentHealth: 0
   healthBarPrefab: {fileID: 9056389998891388781, guid: 1aba103ce9e194bab882f6c35f0d1668, type: 3}
+  bossHealthBarPrefab: {fileID: 423196536021492706, guid: 40e0b3f94c7fc4cd8bca066da094303c, type: 3}
 --- !u!212 &-8637920881184840699
 SpriteRenderer:
   m_ObjectHideFlags: 0

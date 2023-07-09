@@ -17,5 +17,15 @@ public abstract class Weapon : MonoBehaviour
     }
 
     public abstract void Attack(Enemy enemy); // 파라미터가 없는 Attack 메서드
+
+    public void IncreasePower()
+    {
+        damage *= 1.1f;
+    }
+
+    public void IncreaseAttackSpeed()
+    {
+        attackSpeed *= 0.9f;
+    }
 }
 

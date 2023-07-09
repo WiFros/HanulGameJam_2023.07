@@ -5,6 +5,7 @@ public class Arrow : MonoBehaviour
     private Enemy target; // 화살의 타겟
     private float speed; // 화살의 속도
     private float damage; // 화살이 주는 피해
+    public GameObject hitEffectPrefab;
 
     // 화살의 속도, 피해, 타겟을 초기화
     public void Initialize(float speed, float damage, Enemy target)
@@ -12,6 +13,9 @@ public class Arrow : MonoBehaviour
         this.speed = speed;
         this.damage = damage;
         this.target = target;
+        
+        // 화살의 방향을 적의 방향으로 설정합니다.
+        transform.LookAt(target.transform);
     }
 
     void Update()
@@ -23,11 +27,12 @@ public class Arrow : MonoBehaviour
         }
 
         // 타겟을 향해 이동
-        Vector3 direction = target.transform.position - transform.position;
+        Vector2 direction = target.transform.position - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         float distanceThisFrame = speed * Time.deltaTime;
         
         // 화살이 타겟을 바라보도록 회전
-        //transform.rotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         
         if (direction.magnitude <= distanceThisFrame)
         {
@@ -41,6 +46,7 @@ public class Arrow : MonoBehaviour
 
     void HitTarget()
     {
+        Instantiate(hitEffectPrefab, target.transform.position, Quaternion.identity);
         target.TakeDamage(damage);
         Destroy(gameObject);
     }
